@@ -52,16 +52,16 @@ app.get('/stream-text', (req, res) => {
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
 
-  const intervalId = setInterval(() => {
-    res.write(`data: ${new Date().toLocaleTimeString()}\n\n`);
-  }, 1000);
-
   // Send initial message
-  res.write('data: Initial message\n\n');
+  res.write('What would you like to know related to the revenue estimate?');
+  res.write(`Certainly, here’s some reasoning: \n\n1. there are 4 new clients that combined could bring additional $20,000 by the end of the year.`);
+  res.write(`2. There is a good chance of Telus signing the new $40,000 contract, first payment tranche is scheduled at September 25th. \n\n3. There is a good engagement on the last marketing campaign.`);
+  res.write(`Updating the Dashboard...`);
+  res.write(`Done. \n\nShutting down...`);
 
   // Close connection after 10 seconds (for demo purposes)
   setTimeout(() => {
-    clearInterval(intervalId);
+    // clearInterval(intervalId);
     res.end();
   }, 10000);
 });
