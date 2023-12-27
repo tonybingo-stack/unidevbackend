@@ -1,0 +1,32 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text and Audio Streaming</title>
+</head>
+<body>
+  <div id="text-stream"></div>
+
+  <audio controls>
+    <source src="http://localhost:5000/stream-audio" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  
+  <script>
+    const eventSource = new EventSource('/stream-text');
+    const textStream = document.getElementById('text-stream');
+
+    eventSource.onmessage = (event) => {
+      const message = event.data;
+      textStream.innerHTML += `${message}<br>`;
+    };
+
+    eventSource.onerror = (error) => {
+      console.error('EventSource failed:', error);
+      eventSource.close();
+    };
+  </script>
+</body>
+</html>
