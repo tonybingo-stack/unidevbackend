@@ -53,11 +53,11 @@ app.get('/stream-text', (req, res) => {
   res.setHeader('Connection', 'keep-alive');
 
   // Send initial message
-  res.write('What would you like to know related to the revenue estimate?');
-  res.write(`Certainly, here’s some reasoning: \n\n1. there are 4 new clients that combined could bring additional $20,000 by the end of the year.`);
-  res.write(`2. There is a good chance of Telus signing the new $40,000 contract, first payment tranche is scheduled at September 25th. \n\n3. There is a good engagement on the last marketing campaign.`);
-  res.write(`Updating the Dashboard...`);
-  res.write(`Done. \n\nShutting down...`);
+  res.write("data: 'What would you like to know related to the revenue estimate?'");
+  res.write("data: `Certainly, here’s some reasoning: \n\n1. there are 4 new clients that combined could bring additional $20,000 by the end of the year.`");
+  res.write("data: `2. There is a good chance of Telus signing the new $40,000 contract, first payment tranche is scheduled at September 25th. \n\n3. There is a good engagement on the last marketing campaign.`");
+  res.write("data: `Updating the Dashboard...`");
+  res.write("data: `Done. \n\nShutting down...`");
 
   // Close connection after 10 seconds (for demo purposes)
   setTimeout(() => {
