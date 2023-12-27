@@ -4,12 +4,15 @@ const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 const audioFilePath = './audio.mp3'; // Replace with the actual path to your MP3 file
+
+app.use(cors());
 
 app.get('/stream-audio', (req, res) => {
   const stat = fs.statSync(audioFilePath);
