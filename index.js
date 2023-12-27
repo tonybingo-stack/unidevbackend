@@ -14,6 +14,28 @@ const audioFilePath = './audio.mp3'; // Replace with the actual path to your MP3
 
 app.use(cors());
 
+app.use(express.static('public'));
+
+app.get('/stream-text', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  // Send initial message
+  // res.write("data: initial message\n\n");
+  res.write("data: { data: [{percent: 30,shortText: 'Improved RO1 on ad spend', longDesc: 'Media buying helped with these results, since it's an important way of attracting clients', },\n\n");
+  res.write("data: {percent: 50, shortText: 'More engagement in majority of campains', longDesc: 'Ads generated significantly more engagement',},\n\n");
+  res.write("data: { percent: 38, shortText: 'Surge in Website Traffic', longDesc: 'As a consequence, website visits skyrocketed, boosted by social media engagement',},\n\n");
+  res.write("data: {percent: 42,shortText: Surge in Social Channel Traffic',longDesc: 'The Surge extended to social media, where engagement almost exactly followed website visits',},]}\n\n");
+  
+  // Close connection after 10 seconds (for demo purposes)
+  setTimeout(() => {
+    // clearInterval(intervalId);
+    res.end();
+  }, 10000);
+});
+
+
 app.get('/stream-audio', (req, res) => {
   const stat = fs.statSync(audioFilePath);
   const fileSize = stat.size;
@@ -43,27 +65,6 @@ app.get('/stream-audio', (req, res) => {
     res.writeHead(200, head);
     fs.createReadStream(audioFilePath).pipe(res);
   }
-});
-
-app.use(express.static('public'));
-
-app.get('/stream-text', (req, res) => {
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-
-  // Send initial message
-  res.write("data: 'What would you like to know related to the revenue estimate?'");
-  res.write("data: `Certainly, here’s some reasoning: \n\n1. there are 4 new clients that combined could bring additional $20,000 by the end of the year.`");
-  res.write("data: `2. There is a good chance of Telus signing the new $40,000 contract, first payment tranche is scheduled at September 25th. \n\n3. There is a good engagement on the last marketing campaign.`");
-  res.write("data: `Updating the Dashboard...`");
-  res.write("data: `Done. \n\nShutting down...`");
-
-  // Close connection after 10 seconds (for demo purposes)
-  setTimeout(() => {
-    // clearInterval(intervalId);
-    res.end();
-  }, 10000);
 });
 
 const PORT = process.env.PORT || 5000;
