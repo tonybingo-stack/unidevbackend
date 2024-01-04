@@ -30,10 +30,13 @@ io.on('connection', (socket) => {
   console.log('new user connected');
 
   socket.on('message', (message) => {
-    console.log(`Received message: ${message}`);
     if (message === 'data-for-finance-card') {
-      setTimeout(() => {
+      let count = 0;
+      let timerID = setInterval(() => {
         socket.send(data);
+        count ++;
+        console.log('sending...', count);
+        if(count > 5)  clearInterval(timerID);
       }, 3000);
     }
   });
