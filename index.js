@@ -23,21 +23,25 @@ const data = `[
   {"percent": 38, "shortText": "Surge in Website Traffic", "longDesc": "As a consequence, website visits skyrocketed, boosted by social media engagement"},
   {"percent": 42, "shortText": "Surge in Social Channel Traffic", "longDesc": "The Surge extended to social media, where engagement almost exactly followed website visits"}
 ]`;
+
 app.use(express.static('public'));
 
-// app.get('/stream-text', (req, res) => {
-//   res.setHeader('Content-Type', 'text/event-stream');
-//   res.setHeader('Cache-Control', 'no-cache');
-//   res.setHeader('Connection', 'keep-alive');
+io.on('connection', (socket) => {
+  console.log('new user connected');
 
-//   // Send initial message
-//   res.write(`data: ${data} \n\n`);
-//   // Close connection after 10 seconds (for demo purposes)
-//   setTimeout(() => {
-//     res.end();
-//   }, 10000);
-// });
+  socket.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+    if (message === 'data-for-finance-card') {
+      setTimeout(() => {
+        socket.send(data);
+      }, 3000);
+    }
+  });
 
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
 
 app.get('/stream-audio', (req, res) => {
   const stat = fs.statSync(audioFilePath);
@@ -68,22 +72,6 @@ app.get('/stream-audio', (req, res) => {
     res.writeHead(200, head);
     fs.createReadStream(audioFilePath).pipe(res);
   }
-});
-
-io.on('connection', (socket) => {
-  console.log('new user connected');
-  
-  socket.on('message', (message) => {
-    console.log(`Received message: ${message}`);
-    if (message === 'data for finance card') {
-      console.log('sending...', data);
-      socket.send(data);
-    }
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
 });
 
 const PORT = process.env.PORT || 5000;
